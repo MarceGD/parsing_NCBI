@@ -15,3 +15,5 @@ print(dic3['ArticleTitle'] + '\n') #titulo del articulo
 
 print(dic4['AbstractText'][0]) #Abstrac
 
+#rettype = This parameter specifies the record view returned, such as Abstract or MEDLINE from PubMed, or GenPept or FASTA from protein
+#retmode = This parameter specifies the data format of the records returned, such as plain text, HMTL or XML (R)
