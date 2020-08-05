@@ -1,9 +1,10 @@
 ##Este pequeño codigo extrae El titulo y el abstract de un articulo en particular
 from Bio import Entrez
 
+id_paper = input("ingrese el PMID del paper que quiera parsear: ")
 
 Entrez.email = "mdgamarraok@gmail.com" #siempre para entrar a NCBI hay que decir quien sos
-handle=Entrez.efetch(db="pubmed",id='30407518',rettype="null",retmode="xml") #aca digo la base de datos db, el id del paper (rettype y retmode nose que es)
+handle=Entrez.efetch(db="pubmed",id= id_paper ,rettype="null",retmode="xml") #aca digo la base de datos db, el id del paper (rettype y retmode nose que es)
 record = Entrez.read(handle) ##dedino record que es el diccionario con la informacion y empiezo a parsear las llaves
 dic1 = record['PubmedArticle'][0]
 dic2 = dic1['MedlineCitation']
