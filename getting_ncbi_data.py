@@ -3,10 +3,12 @@
 
 from Bio import Entrez
 import pandas as pd 
-
+#Entres (NCBI) necesita un mail para saber quien es el que ingres
 Entrez.email = "mdgamarraok@gmail.com"
+#Listas de ids de articulos (esto puede ser sacado con un for loop)
 lista_pmids = ['32714499', '32708835', '32698099', '32686918', '32683879', '32683791']
-df = pd.DataFrame(columns=['PMID', 'Title', 'Abstract'])
+#Defino las columnas de mi data frame
+df = pd.DataFrame(columns=['PMID', 'Title', 'Abstract', 'Journal'])
 
 for pmid in lista_pmids:
     handle=Entrez.efetch(db="pubmed",id= pmid,rettype="null",retmode="xml")
