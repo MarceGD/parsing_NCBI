@@ -12,6 +12,8 @@ df = pd.DataFrame(columns=['PMID', 'Title', 'Abstract', 'Journal'])
 
 for pmid in lista_pmids:
     handle=Entrez.efetch(db="pubmed",id= pmid,rettype="null",retmode="xml")
+#rettype = This parameter specifies the record view returned, such as Abstract or MEDLINE from PubMed, or GenPept or FASTA from protein
+#retmode = This parameter specifies the data format of the records returned, such as plain text, HMTL or XML (R)
     record = Entrez.read(handle)
 #parsea los elementos del articulo (diccionario de diccionarios)    
 #dic3.keys() para ver los elementos de ese diccionario   
