@@ -10,21 +10,39 @@ lista_pmids = ['32714499', '32708835', '32698099', '32686918', '32683879', '3268
 #Defino las columnas de mi data frame
 df = pd.DataFrame(columns=['PMID', 'Title', 'Abstract', 'Journal'])
 
-for pmid in lista_pmids:
-    handle=Entrez.efetch(db="pubmed",id= pmid,rettype="null",retmode="xml")
-#rettype = This parameter specifies the record view returned, such as Abstract or MEDLINE from PubMed, or GenPept or FASTA from protein
-#retmode = This parameter specifies the data format of the records returned, such as plain text, HMTL or XML (R)
-    record = Entrez.read(handle)
-#parsea los elementos del articulo (diccionario de diccionarios)    
-#dic3.keys() para ver los elementos de ese diccionario   
-    dic1 = record['PubmedArticle'][0]
-    dic2 = dic1['MedlineCitation']
-    dic3 = dic2['Article']
-    Authors = (dic3['AuthorList'][0])['LastName'] + ' ' + ((dic3['AuthorList'][0])['ForeName'])
-    Journal = dic3['Journal']['Title']
-    dic4 = dic3['Abstract']
-    Title = dic3['ArticleTitle']
-    Abstract = dic4['AbstractText'][0]
-#Definir los elementos del Dataframe   
-    df = df.append({'PMID': pmid, 'Title': Title, 'Abstract': Abstract, 'Author': Authors, 'Journal': Journal}, ignore_index=True)
+
+class pubmed_parser:
+
+    def author(id_pmid):
+        andle=Entrez.efetch(db="pubmed",id= id_pmid,rettype="null",retmode="xml")
+        record = Entrez.read(handle)
+        dic1 = record['PubmedArticle'][0]
+        dic2 = dic1['MedlineCitation']
+        dic3 = dic2['Article']
+        Authors = (dic3['AuthorList'][0])['LastName'] + ' ' + ((dic3['AuthorList'][0])['ForeName'])
+        Journal = dic3['Journal']['Title']
+        dic4 = dic3['Abstract']
+        Title = dic3['ArticleTitle']
+        Abstract = dic4['AbstractText'][0]
+   
+   
+class NCBI:
+    
+    def Pubmed(name):
+        handle=Entrez.efetch(db="pubmed",id= name ,rettype="null",retmode="xml")
+        #rettype = This parameter specifies the record view returned, such as Abstract or MEDLINE from PubMed, or GenPept or FASTA from protein
+        #retmode = This parameter specifies the data format of the records returned, such as plain text, HMTL or XML (R)
+        record = Entrez.read(handle)
+        #parsea los elementos del articulo (diccionario de diccionarios)
+        Title = (((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['ArticleTitle']
+        Abstract = ((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['Abstract'])['AbstractText'][0]
+        Journal = (((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['Journal']
+        Authors = ((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['AuthorList'][0])['LastName'] + ' ' + (((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['AuthorList'][0])['ForeName'])
+        global df #avisa a la funcion que df ya esta definido afuera
+        df = df.append({'PMID': i, 'Title': Title, 'Abstract': Abstract, 'Author': Authors, 'Journal': Journal}, ignore_index=True)
+       
+
+for i in lista_pmids:
+    NCBI.Pubmed(i)
+
 print(df)
