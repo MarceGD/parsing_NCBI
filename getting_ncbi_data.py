@@ -24,7 +24,15 @@ class NCBI:
         Authors = ((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['AuthorList'][0])['LastName'] + ' ' + (((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['AuthorList'][0])['ForeName'])
         global df #avisa a la funcion que df ya esta definido afuera
         df = df.append({'PMID': i, 'Title': Title, 'Abstract': Abstract, 'Author': Authors, 'Journal': Journal}, ignore_index=True)
-       
+    
+    def protein:
+        pass
+
+    def nucleotide:
+        pass
+    
+    def omim:
+        pass
 
 for i in lista_pmids:
     NCBI.Pubmed(i)
