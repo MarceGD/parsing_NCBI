@@ -9,22 +9,6 @@ Entrez.email = "mdgamarraok@gmail.com"
 lista_pmids = ['32714499', '32708835', '32698099', '32686918', '32683879', '32683791']
 #Defino las columnas de mi data frame
 df = pd.DataFrame(columns=['PMID', 'Title', 'Abstract', 'Journal'])
-
-
-class pubmed_parser:
-
-    def author(id_pmid):
-        andle=Entrez.efetch(db="pubmed",id= id_pmid,rettype="null",retmode="xml")
-        record = Entrez.read(handle)
-        dic1 = record['PubmedArticle'][0]
-        dic2 = dic1['MedlineCitation']
-        dic3 = dic2['Article']
-        Authors = (dic3['AuthorList'][0])['LastName'] + ' ' + ((dic3['AuthorList'][0])['ForeName'])
-        Journal = dic3['Journal']['Title']
-        dic4 = dic3['Abstract']
-        Title = dic3['ArticleTitle']
-        Abstract = dic4['AbstractText'][0]
-   
    
 class NCBI:
     
