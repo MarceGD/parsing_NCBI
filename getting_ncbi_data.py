@@ -1,20 +1,40 @@
 ##Este pequeño codigo extrae El titulo y el abstract de un articulo en particular
+
+
 from Bio import Entrez
+import pandas as pd 
+#Entres (NCBI) necesita un mail para saber quien es el que ingres
+Entrez.email = "mdgamarraok@gmail.com"
+#Listas de ids de articulos (esto puede ser sacado con un for loop)
+lista_pmids = ['32714499', '32708835', '32698099', '32686918', '32683879', '32683791']
+#Defino las columnas de mi data frame
+df = pd.DataFrame(columns=['PMID', 'Title', 'Abstract', 'Journal'])
+   
+class NCBI:
+    
+    def Pubmed(name):
+        handle=Entrez.efetch(db="pubmed",id= name ,rettype="null",retmode="xml")
+        #rettype = This parameter specifies the record view returned, such as Abstract or MEDLINE from PubMed, or GenPept or FASTA from protein
+        #retmode = This parameter specifies the data format of the records returned, such as plain text, HMTL or XML (R)
+        record = Entrez.read(handle)
+        #parsea los elementos del articulo (diccionario de diccionarios)
+        Title = (((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['ArticleTitle']
+        Abstract = ((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['Abstract'])['AbstractText'][0]
+        Journal = (((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['Journal']
+        Authors = ((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['AuthorList'][0])['LastName'] + ' ' + (((((record['PubmedArticle'][0])['MedlineCitation'])['Article'])['AuthorList'][0])['ForeName'])
+        global df #avisa a la funcion que df ya esta definido afuera
+        df = df.append({'PMID': i, 'Title': Title, 'Abstract': Abstract, 'Author': Authors, 'Journal': Journal}, ignore_index=True)
+    
+    def protein:
+        pass
 
-id_paper = input("ingrese el PMID del paper que quiera parsear: ")
+    def nucleotide:
+        pass
+    
+    def omim:
+        pass
 
-Entrez.email = "mdgamarraok@gmail.com" #siempre para entrar a NCBI hay que decir quien sos
-handle=Entrez.efetch(db="pubmed",id= id_paper ,rettype="null",retmode="xml") #aca digo la base de datos db, el id del paper (rettype y retmode nose que es)
-record = Entrez.read(handle) ##dedino record que es el diccionario con la informacion y empiezo a parsear las llaves
-dic1 = record['PubmedArticle'][0]
-dic2 = dic1['MedlineCitation']
-dic3 = dic2['Article']
-#dic3.keys() para ver que posee ese diccionario
-dic4 = dic3['Abstract'] #Extrae el abstract del articulo 
+for i in lista_pmids:
+    NCBI.Pubmed(i)
 
-print(dic3['ArticleTitle'] + '\n') #titulo del articulo
-
-print(dic4['AbstractText'][0]) #Abstrac
-
-#rettype = This parameter specifies the record view returned, such as Abstract or MEDLINE from PubMed, or GenPept or FASTA from protein
-#retmode = This parameter specifies the data format of the records returned, such as plain text, HMTL or XML (R)
+print(df)
